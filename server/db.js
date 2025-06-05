@@ -263,6 +263,22 @@ const deleteAllFromDatabase = (modelType) => {
   return model.data;
 }
 
+function getNextId(type) {
+  const items = getAllFromDatabase(type);
+
+  if (!items || !Array.isArray(items)) {
+    throw new Error(`Invalid type "${type}" passed to getNextId`);
+  }
+
+  // Find max ID and increment it
+  const maxId = items.reduce((max, item) => {
+    const idNum = Number(item.id);
+    return isNaN(idNum) ? max : Math.max(max, idNum);
+  }, 0);
+
+  return String(maxId + 1);
+}
+
 module.exports = {
   createMeeting,
   getAllFromDatabase,
@@ -271,4 +287,5 @@ module.exports = {
   updateInstanceInDatabase,
   deleteFromDatabasebyId,
   deleteAllFromDatabase,
+  getNextId,
 };

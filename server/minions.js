@@ -27,8 +27,9 @@ minionsRouter.get('/:minionId', (req, res, next) => {
 
 // POST / api/minions - Add a new minion
 minionsRouter.post('/', (req, res, next) => {
-    const newMinion = addToDatabase('minions', req.body);
-    res.status(201).send(newMinion);
+    const newMinion = { ...req.body, id: getNextId("minions") };
+    const added = addToDatabase("minions", newMinion);
+    res.status(201).send(added);
 })
 
 // PUT / api/minions/:minionId - Update a minion by ID
